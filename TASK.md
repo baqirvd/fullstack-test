@@ -56,12 +56,3 @@ Build on top of `App.tsx`:
 ### Tests
 - At least one **backend unit test** (e.g. your route handler or a filter function)
 - At least one **frontend integration test** using React Testing Library (not a pure mock)
-
----
-
-## Ground rules
-
-- Use any AI tool you like — narrate your decisions and push back on AI output where needed.
-- Smaller and thoughtful beats bigger and rushed.
-- Ask questions any time — treat your interviewer as a teammate.
-- **Out of scope:** auth, pixel-perfect styling, deployment.
