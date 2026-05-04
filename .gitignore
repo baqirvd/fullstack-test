@@ -1,5 +1,5 @@
 node_modules/
-.env
-*.tmp
 dist/
+coverage/
+.env
 .DS_Store

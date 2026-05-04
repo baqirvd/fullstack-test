@@ -6,8 +6,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// TODO: mount your routes here
-// const transactionRoutes = require('./routes/transactions');
-// app.use('/api/transactions', transactionRoutes);
+app.get('/api/health', (_req, res) => res.json({ ok: true }));
 
 module.exports = app;

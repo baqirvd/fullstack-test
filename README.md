@@ -1,42 +1,41 @@
 # Transaction Search — Interview Starter
 
-## Structure
+## Quick start
 
-```
-backend/   Express + Mongoose + mongodb-memory-server
-frontend/  Vite + React + MUI + React Query
-```
-
-## Getting started
-
-### Backend
 ```bash
-cd backend
-npm install
-npm run dev        # starts in-memory MongoDB, seeds 50 transactions, boots on :3001
-npm test           # runs Jest against in-memory MongoDB (pre-seeded)
+npm install          # installs everything (root + both workspaces)
+npm run dev          # starts backend on :4000 and frontend on :5173
 ```
 
-### Frontend
+Run tests independently:
+
 ```bash
-cd frontend
-npm install
-npm run dev        # Vite dev server on :5173, proxies /api → :3001
-npm test           # Vitest + Testing Library
+npm test -w backend
+npm test -w frontend
 ```
 
-## What's wired up for you
+## Project structure
 
-| Thing | Detail |
+`backend/` is a Node.js + Express API. Transaction data is loaded from `backend/seed/transactions.json` into an in-memory store (`src/store.js`) at startup — no database required. `frontend/` is a Vite + React + TypeScript app with MUI and React Query already wired up in `main.tsx`; it proxies `/api/*` to the backend on port 4000.
+
+## What's pre-wired for you
+
+- **In-memory data store** — `backend/src/store.js` exports a `transactions` array pre-loaded from `seed/transactions.json`. Import it wherever you need it — no setup required.
+- **Seed data** — 50 realistic banking transactions across accounts ACC001–ACC005 (Jan–Feb 2024, mix of `pending` / `cleared` / `failed` statuses, USD/EUR/GBP currencies).
+- **`GET /api/health`** — returns `{ ok: true }`, confirming the server is up.
+- **MUI + React Query** — `ThemeProvider`, `QueryClientProvider`, and `CssBaseline` are already in `frontend/src/main.tsx`.
+- **Jest on both sides** — `backend/tests/seed.test.js` gives you a working example to model your own tests from.
+
+## What you're building
+
+See the task brief your interviewer shared with you.
+
+## Useful commands
+
+| Command | What it does |
 |---|---|
-| `process.env.MONGO_URI` | Set automatically — both in `npm run dev` and Jest `globalSetup` |
-| Seed data | 50 transactions across 5 accounts in `backend/data/transactions.json` |
-| Transaction model | `backend/src/models/Transaction.js` — accountId, date, amount, status, description |
-| Express app | `backend/src/app.js` — CORS + JSON middleware, awaiting your routes |
-| React shell | `frontend/src/App.jsx` — MUI Container, QueryClientProvider in `main.jsx` |
-
-## Your tasks
-
-1. **Backend** — `GET /api/transactions` with query params: `accountId`, `dateFrom`, `dateTo`, `minAmount`, `maxAmount`, `status`, `page`, `pageSize`. Use real Mongoose queries — no in-memory filtering.
-2. **Frontend** — filter form, results table, pagination, loading / empty / error states.
-3. **Tests** — at least one backend unit test and one frontend integration test (Testing Library).
+| `npm install` | Install all dependencies |
+| `npm run dev` | Start backend (:4000) + frontend (:5173) concurrently |
+| `npm test -w backend` | Run backend Jest suite |
+| `npm test -w frontend` | Run frontend Jest suite |
+| `npm run build -w frontend` | Production build |
