@@ -36,23 +36,30 @@ Implement `GET /api/transactions` with the following query params:
 | `maxAmount` | number | inclusive upper bound on `amount` |
 | `status` | `pending \| cleared \| failed` | exact match |
 | `page` | integer ≥ 1 | default `1` |
-| `pageSize` | integer ≥ 1 | default `10` |
+| `pageSize` | integer 1–50 | default `10` |
 
 **Response shape:**
 ```json
 { "data": [...], "total": 42, "page": 1, "pageSize": 10 }
 ```
 
-Validate inputs and return clear `4xx` errors for bad values.
+**Validation — return a `400` with a descriptive message for:**
+- `pageSize` outside the 1–50 range
+- `minAmount` or `maxAmount` that is not a finite number
+- `dateFrom` after `dateTo` when both are supplied
+- `status` value not in the allowed enum
+
+Unknown query params should be silently ignored.
 
 ### Frontend
 Build on top of `App.tsx`:
 
-- Filter form covering all the params above
-- Results table showing the returned transactions
-- Pagination controls
-- Visible **loading**, **empty**, and **error** states
+- Filter form covering all the params above. `pageSize` should be a fixed selector (options: 10, 25, 50) — not a free-text input.
+- Results table showing the returned transactions.
+- Pagination controls. **Changing any filter must reset the page back to 1.**
+- Visible **loading**, **empty**, and **error** states.
+- Filter state must be reflected in the URL (query string) so the current search is shareable and survives a page refresh.
 
 ### Tests
-- At least one **backend unit test** (e.g. your route handler or a filter function)
-- At least one **frontend integration test** using React Testing Library (not a pure mock)
+- At least one **backend unit test** — cover at least one of the validation rules above, not just the happy path.
+- At least one **frontend integration test** using React Testing Library: render the filter form, change the status filter, submit, and assert that only transactions matching that status are rendered in the table. Mocking the API call is fine; mocking the component under test is not.
